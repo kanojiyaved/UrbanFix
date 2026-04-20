@@ -24,12 +24,12 @@
 ## 🏗️ System Architecture
 ```mermaid
 flowchart LR
-    A[Citizen App / Web] --> B[Frontend UI]
-    B --> C[Backend API (Flask / FastAPI)]
-    C --> D[Database (PostgreSQL / MySQL)]
-    C --> E[ML Model - Pothole Detection]
+    A["Citizen App / Web"] --> B[Frontend UI]
+    B --> C["Backend API (Flask / FastAPI)"]
+    C --> D["Database (PostgreSQL / MySQL)"]
+    C --> E["ML Model - Pothole Detection"]
     C --> F[Contractor Assignment Module]
-    D --> G[Analytics Dashboard (Power BI / Streamlit)]
+    D --> G["Analytics Dashboard (Power BI / Streamlit)"]
     G --> H[Admin Panel]
     F --> I[Contractor]
     I --> C
