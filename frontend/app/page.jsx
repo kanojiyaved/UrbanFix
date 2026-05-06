@@ -1,8 +1,10 @@
+"use client";
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ShieldAlert, MapPin, HardHat, ArrowRight } from 'lucide-react';
 
-const Home = () => {
+export default function Home() {
   return (
     <div className="container" style={{ padding: '4rem 1.5rem' }}>
       <div className="text-center animate-fade-in" style={{ maxWidth: '800px', margin: '0 auto' }}>
@@ -24,7 +26,7 @@ const Home = () => {
           <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flexGrow: 1 }}>
             Spot a pothole? Snap a photo. We'll grab your precise location and notify the authorities instantly.
           </p>
-          <Link to="/report" className="btn btn-primary" style={{ width: '100%' }}>
+          <Link href="/report" className="btn btn-primary" style={{ width: '100%', textDecoration: 'none' }}>
             Report Issue <ArrowRight size={16} />
           </Link>
         </div>
@@ -37,7 +39,7 @@ const Home = () => {
           <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flexGrow: 1 }}>
             Review reported issues, analyze locations, and dispatch the right contractors efficiently.
           </p>
-          <Link to="/gov" className="btn btn-secondary" style={{ width: '100%' }}>
+          <Link href="/gov" className="btn btn-secondary" style={{ width: '100%', textDecoration: 'none' }}>
             Access Portal <ArrowRight size={16} />
           </Link>
         </div>
@@ -50,13 +52,11 @@ const Home = () => {
           <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flexGrow: 1 }}>
             View assigned tasks, navigate to the exact spot, and upload proof of repair.
           </p>
-          <Link to="/contractor" className="btn btn-secondary" style={{ width: '100%' }}>
+          <Link href="/contractor" className="btn btn-secondary" style={{ width: '100%', textDecoration: 'none' }}>
             View Tasks <ArrowRight size={16} />
           </Link>
         </div>
       </div>
     </div>
   );
-};
-
-export default Home;
+}

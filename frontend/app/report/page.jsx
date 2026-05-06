@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useState, useRef } from 'react';
 import { Camera, MapPin, Upload, CheckCircle } from 'lucide-react';
-import { savePothole } from '../services/mockDb';
+import { savePothole } from '../../services/mockDb';
 
-const CitizenReport = () => {
+export default function CitizenReport() {
   const [image, setImage] = useState(null);
   const [location, setLocation] = useState(null);
   const [loadingLoc, setLoadingLoc] = useState(false);
@@ -150,6 +152,4 @@ const CitizenReport = () => {
       </div>
     </div>
   );
-};
-
-export default CitizenReport;
+}

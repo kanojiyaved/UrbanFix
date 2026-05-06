@@ -1,15 +1,35 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { getPotholes, updatePotholeStatus } from '../services/mockDb';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../context/AuthContext';
+import { getPotholes, updatePotholeStatus } from '../../services/mockDb';
 import { MapPin, Clock, CheckCircle, ShieldAlert } from 'lucide-react';
 
-const GovDashboard = () => {
+export default function GovDashboard() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [potholes, setPotholes] = useState([]);
   const [filter, setFilter] = useState('all');
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
-    // Load initial data
-    setPotholes(getPotholes().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
-  }, []);
+    if (!loading) {
+      if (!user) {
+        router.push('/login');
+      } else if (user.role !== 'gov') {
+        router.push(user.role === 'contractor' ? '/contractor' : '/');
+      } else {
+        setIsAuthorized(true);
+      }
+    }
+  }, [user, loading, router]);
+
+  useEffect(() => {
+    if (isAuthorized) {
+      setPotholes(getPotholes().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+    }
+  }, [isAuthorized]);
 
   const handleAssign = (id, contractorName) => {
     if (!contractorName) return;
@@ -20,6 +40,8 @@ const GovDashboard = () => {
     
     setPotholes(prev => prev.map(p => p.id === id ? updated : p));
   };
+
+  if (!isAuthorized) return <div className="container" style={{ padding: '4rem' }}>Loading...</div>;
 
   const filteredPotholes = potholes.filter(p => {
     if (filter === 'all') return true;
@@ -57,7 +79,7 @@ const GovDashboard = () => {
           <p style={{ color: 'var(--text-secondary)' }}>No potholes match the current filter.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-6 animate-fade-in delay-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in delay-100">
           {filteredPotholes.map(pothole => (
             <div key={pothole.id} className="glass-card flex flex-col">
               <div className="flex justify-between items-center mb-4">
@@ -120,6 +142,4 @@ const GovDashboard = () => {
       )}
     </div>
   );
-};
-
-export default GovDashboard;
+}

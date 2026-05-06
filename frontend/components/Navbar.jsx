@@ -1,45 +1,48 @@
+"use client";
+
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { MapPin, ShieldAlert, HardHat, Home, LogOut, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuth();
 
   const isActive = (path) => {
-    return location.pathname === path ? 'active' : '';
+    return pathname === path ? 'active' : '';
   };
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    router.push('/');
   };
 
   return (
     <nav className="glass" style={{ margin: '1rem', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'var(--text-primary)' }}>
+      <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'var(--text-primary)' }}>
         <MapPin color="var(--primary)" size={28} />
         <span style={{ fontSize: '1.25rem', fontWeight: 'bold' }} className="text-gradient">UrbanFix</span>
       </Link>
       
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-        <Link to="/" style={navLinkStyle(isActive('/'))}>
+        <Link href="/" style={navLinkStyle(isActive('/'))}>
           <Home size={18} /> Home
         </Link>
-        <Link to="/report" style={navLinkStyle(isActive('/report'))}>
+        <Link href="/report" style={navLinkStyle(isActive('/report'))}>
           <ShieldAlert size={18} /> Report Pothole
         </Link>
         
         {user?.role === 'gov' && (
-          <Link to="/gov" style={navLinkStyle(isActive('/gov'))}>
+          <Link href="/gov" style={navLinkStyle(isActive('/gov'))}>
             <MapPin size={18} /> Gov Portal
           </Link>
         )}
         
         {user?.role === 'contractor' && (
-          <Link to="/contractor" style={navLinkStyle(isActive('/contractor'))}>
+          <Link href="/contractor" style={navLinkStyle(isActive('/contractor'))}>
             <HardHat size={18} /> Contractor Portal
           </Link>
         )}
@@ -60,9 +63,14 @@ const Navbar = () => {
             </button>
           </div>
         ) : (
-          <Link to="/login" className="btn btn-primary" style={{ padding: '0.5rem 1.5rem' }}>
-            Login <LogIn size={16} />
-          </Link>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <Link href="/login" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+              Login <LogIn size={16} />
+            </Link>
+            <Link href="/signup" className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+              Sign Up
+            </Link>
+          </div>
         )}
       </div>
     </nav>

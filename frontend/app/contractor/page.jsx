@@ -1,23 +1,41 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
-import { getPotholes, updatePotholeStatus } from '../services/mockDb';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../context/AuthContext';
+import { getPotholes, updatePotholeStatus } from '../../services/mockDb';
 import { Camera, MapPin, Upload, HardHat, CheckCircle } from 'lucide-react';
 
-const ContractorDashboard = () => {
+export default function ContractorDashboard() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [imageAfter, setImageAfter] = useState(null);
   const [locationAfter, setLocationAfter] = useState(null);
   const [loadingLoc, setLoadingLoc] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const fileInputRef = useRef(null);
 
-  // For this mock, we assume the contractor is "City Maintenance Dept"
-  const contractorId = "City Maintenance Dept";
+  useEffect(() => {
+    if (!loading) {
+      if (!user) {
+        router.push('/login');
+      } else if (user.role !== 'contractor') {
+        router.push(user.role === 'gov' ? '/gov' : '/');
+      } else {
+        setIsAuthorized(true);
+      }
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
-    loadTasks();
-  }, []);
+    if (isAuthorized && user) {
+      loadTasks(user.name); // Using user.name as the contractorId
+    }
+  }, [isAuthorized, user]);
 
-  const loadTasks = () => {
+  const loadTasks = (contractorId) => {
     const allPotholes = getPotholes();
     const myTasks = allPotholes.filter(p => 
       (p.status === 'assigned' || p.status === 'fixed') && 
@@ -67,11 +85,13 @@ const ContractorDashboard = () => {
       resolvedAt: new Date().toISOString()
     });
     
-    loadTasks();
+    loadTasks(user.name);
     setSelectedTask(null);
     setImageAfter(null);
     setLocationAfter(null);
   };
+
+  if (!isAuthorized) return <div className="container" style={{ padding: '4rem' }}>Loading...</div>;
 
   return (
     <div className="container" style={{ padding: '2rem 1.5rem' }}>
@@ -80,7 +100,7 @@ const ContractorDashboard = () => {
           <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <HardHat color="var(--warning)" /> Contractor Portal
           </h1>
-          <p style={{ color: 'var(--text-secondary)' }}>Welcome, {contractorId}. Manage your assigned tasks.</p>
+          <p style={{ color: 'var(--text-secondary)' }}>Welcome, {user.name}. Manage your assigned tasks.</p>
         </div>
       </div>
 
@@ -205,6 +225,4 @@ const ContractorDashboard = () => {
       </div>
     </div>
   );
-};
-
-export default ContractorDashboard;
+}

@@ -1,11 +1,13 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../context/AuthContext';
 import { UserPlus, MapPin, HardHat } from 'lucide-react';
 
-const Signup = () => {
+export default function Signup() {
   const { login } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
 
@@ -18,9 +20,9 @@ const Signup = () => {
     login(role, name);
     
     if (role === 'gov') {
-      navigate('/gov', { replace: true });
+      router.push('/gov');
     } else {
-      navigate('/contractor', { replace: true });
+      router.push('/contractor');
     }
   };
 
@@ -115,7 +117,7 @@ const Signup = () => {
           <p>
             Already have an account?{' '}
             <span 
-              onClick={() => navigate('/login')} 
+              onClick={() => router.push('/login')} 
               style={{ color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }}
             >
               Sign In
@@ -125,6 +127,4 @@ const Signup = () => {
       </div>
     </div>
   );
-};
-
-export default Signup;
+}

@@ -1,26 +1,25 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../context/AuthContext';
 import { ShieldAlert, MapPin, HardHat, LogIn } from 'lucide-react';
 
-const Login = () => {
+export default function Login() {
   const { login } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
   const [role, setRole] = useState('');
   
-  const from = location.state?.from?.pathname || '/';
-
   const handleLogin = (e) => {
     e.preventDefault();
     if (!role) return;
 
     if (role === 'gov') {
       login('gov', 'Government Official');
-      navigate(from === '/login' || from === '/' ? '/gov' : from, { replace: true });
+      router.push('/gov');
     } else if (role === 'contractor') {
       login('contractor', 'City Maintenance Dept');
-      navigate(from === '/login' || from === '/' ? '/contractor' : from, { replace: true });
+      router.push('/contractor');
     }
   };
 
@@ -105,7 +104,7 @@ const Login = () => {
           <p style={{ marginBottom: '1rem' }}>
             Don't have an account?{' '}
             <span 
-              onClick={() => navigate('/signup')} 
+              onClick={() => router.push('/signup')} 
               style={{ color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }}
             >
               Sign Up
@@ -116,7 +115,7 @@ const Login = () => {
             type="button"
             className="btn btn-secondary" 
             style={{ marginTop: '0.5rem', width: '100%' }}
-            onClick={() => navigate('/report')}
+            onClick={() => router.push('/report')}
           >
             <ShieldAlert size={16} /> Go to Citizen Portal (No Login)
           </button>
@@ -124,6 +123,4 @@ const Login = () => {
       </div>
     </div>
   );
-};
-
-export default Login;
+}
