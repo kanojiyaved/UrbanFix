@@ -13,18 +13,18 @@ export default function Home() {
           <span className="text-gradient">Together.</span>
         </h1>
         <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '3rem' }}>
-          UrbanFix connects citizens, government, and contractors to identify, assign, and resolve infrastructure issues like potholes with precise geographic tracking.
+          UrbanFix connects citizens, government, and contractors to identify, assign, and resolve infrastructure issues like potholes and garbage accumulation with precise geographic tracking.
         </p>
       </div>
 
       <div className="grid grid-cols-3 gap-6 animate-fade-in delay-100">
         <div className="glass-card flex flex-col items-center text-center">
-          <div style={{ background: 'rgba(99, 102, 241, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
+          <div style={{ background: 'rgba(255, 153, 51, 0.15)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
             <ShieldAlert size={32} color="var(--primary)" />
           </div>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Citizens</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flexGrow: 1 }}>
-            Spot a pothole? Snap a photo. We'll grab your precise location and notify the authorities instantly.
+            Spot a pothole or garbage pile? Snap a photo. We'll grab your precise location and notify the authorities instantly.
           </p>
           <Link href="/report" className="btn btn-primary" style={{ width: '100%', textDecoration: 'none' }}>
             Report Issue <ArrowRight size={16} />
@@ -32,7 +32,7 @@ export default function Home() {
         </div>
 
         <div className="glass-card flex flex-col items-center text-center delay-200">
-          <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
+          <div style={{ background: 'rgba(19, 136, 8, 0.15)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
             <MapPin size={32} color="var(--accent)" />
           </div>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Government</h2>
@@ -45,8 +45,8 @@ export default function Home() {
         </div>
 
         <div className="glass-card flex flex-col items-center text-center delay-300">
-          <div style={{ background: 'rgba(245, 158, 11, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
-            <HardHat size={32} color="var(--warning)" />
+          <div style={{ background: 'rgba(0, 0, 128, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
+            <HardHat size={32} color="#000080" />
           </div>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Contractors</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', flexGrow: 1 }}>

@@ -2,11 +2,12 @@
 
 import React, { useState, useRef } from 'react';
 import { Camera, MapPin, Upload, CheckCircle } from 'lucide-react';
-import { savePothole } from '../../services/mockDb';
+import { saveIssue } from '../../services/mockDb';
 
 export default function CitizenReport() {
   const [image, setImage] = useState(null);
   const [location, setLocation] = useState(null);
+  const [issueType, setIssueType] = useState('Pothole');
   const [loadingLoc, setLoadingLoc] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -50,7 +51,8 @@ export default function CitizenReport() {
     setSubmitting(true);
     // Simulate network delay
     setTimeout(() => {
-      savePothole({
+      saveIssue({
+        issueType: issueType,
         imageBefore: image,
         location: location,
       });
@@ -79,14 +81,26 @@ export default function CitizenReport() {
   return (
     <div className="container" style={{ padding: '2rem 1.5rem' }}>
       <div className="glass-card animate-fade-in" style={{ maxWidth: '600px', margin: '0 auto' }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Report a Pothole</h1>
+        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Report an Issue</h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
           Upload a photo and capture your precise location to notify the city.
         </p>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">1. Upload Photo of the Pothole</label>
+            <label className="form-label">1. Issue Type</label>
+            <select 
+              className="form-control" 
+              value={issueType} 
+              onChange={(e) => setIssueType(e.target.value)}
+            >
+              <option value="Pothole">Pothole</option>
+              <option value="Garbage Collection">Garbage Collection</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">2. Upload Photo of the Issue</label>
             {!image ? (
               <div 
                 className="form-control" 
@@ -119,7 +133,7 @@ export default function CitizenReport() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">2. Capture Precise Location</label>
+            <label className="form-label">3. Capture Precise Location</label>
             <div className="flex gap-4 items-center">
               <button 
                 type="button" 

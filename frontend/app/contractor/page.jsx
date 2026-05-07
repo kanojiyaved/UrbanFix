@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
-import { getPotholes, updatePotholeStatus } from '../../services/mockDb';
+import { getIssues, updateIssueStatus } from '../../services/mockDb';
 import { Camera, MapPin, Upload, HardHat, CheckCircle } from 'lucide-react';
 
 export default function ContractorDashboard() {
@@ -36,8 +36,8 @@ export default function ContractorDashboard() {
   }, [isAuthorized, user]);
 
   const loadTasks = (contractorId) => {
-    const allPotholes = getPotholes();
-    const myTasks = allPotholes.filter(p => 
+    const allIssues = getIssues();
+    const myTasks = allIssues.filter(p => 
       (p.status === 'assigned' || p.status === 'fixed') && 
       p.assignedContractor === contractorId
     ).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -79,7 +79,7 @@ export default function ContractorDashboard() {
     if (!selectedTask || !imageAfter || !locationAfter) return;
     
     // In a real app, we would verify if locationAfter matches the original location
-    updatePotholeStatus(selectedTask.id, {
+    updateIssueStatus(selectedTask.id, {
       status: 'fixed',
       imageAfter: imageAfter,
       resolvedAt: new Date().toISOString()
@@ -155,7 +155,12 @@ export default function ContractorDashboard() {
           ) : (
             <div>
               <div className="flex justify-between items-center mb-6 border-bottom" style={{ borderBottom: '1px solid var(--surface-border)', paddingBottom: '1rem' }}>
-                <h2 style={{ fontSize: '1.5rem' }}>Task Details #{selectedTask.id.slice(-5)}</h2>
+                <h2 style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  Task Details #{selectedTask.id.slice(-5)}
+                  <span style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', background: 'rgba(0,0,0,0.05)', borderRadius: '4px', border: '1px solid var(--surface-border)', color: 'var(--text-secondary)' }}>
+                    {selectedTask.issueType || 'Pothole'}
+                  </span>
+                </h2>
                 {selectedTask.status === 'fixed' ? (
                   <span className="badge badge-fixed">Resolved</span>
                 ) : (

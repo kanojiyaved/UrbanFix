@@ -32,7 +32,7 @@ const Navbar = () => {
           <Home size={18} /> Home
         </Link>
         <Link href="/report" style={navLinkStyle(isActive('/report'))}>
-          <ShieldAlert size={18} /> Report Pothole
+          <ShieldAlert size={18} /> Report Issue
         </Link>
         
         {user?.role === 'gov' && (
